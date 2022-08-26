@@ -4,11 +4,23 @@ namespace Warship.Classes
 {
     public class Map
     {
-        public Dictionary<char, string> Context { get; private set; }
+        private char hitChar { get; } = 'o';
+        private char missedChar { get; } = 'x';
+        private string alphabet { get; } = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        public Dictionary<char, char[]> ColumnsContext { get; }
 
         public Map(int columns, int rows)
         {
-            throw new NotImplementedException();
+            var mapContext = new Dictionary<char, char[]>();
+
+            for (var i = 0; i < columns; i++)
+            {
+                var currentChar = (char)alphabet[i];
+
+                mapContext.Add(currentChar, new char[rows]);
+            }
+
+            this.ColumnsContext = mapContext;
         }
 
         public void Show()
