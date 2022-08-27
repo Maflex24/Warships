@@ -2,6 +2,8 @@
 
 var map = new Map(10, 10);
 
+map.Show(); // TODO for test, remove later
+
 var ships = new List<Ship>
 {
     new Ship("Battleship", 5),
