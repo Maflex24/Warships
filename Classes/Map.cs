@@ -9,8 +9,9 @@ namespace Warship.Classes
     {
         public char hitChar { get; } = 'o';
         public char missedChar { get; } = 'x';
-        private string columnSeparator { get; } = "|";
+        private const string columnSeparator = "|";
         private string alphabet { get; } = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
         public Dictionary<char, char[]> MapContext { get; }
 
         public Map(int columns, int rows)
@@ -36,14 +37,14 @@ namespace Warship.Classes
             var topContext = new StringBuilder().Append("  ");
             var rowsContext = new StringBuilder();
 
-            var mapRowsQty = this.MapContext['A'].Length;
+            var mapRowsAmount = GetRowsAmount();
 
             foreach (var column in MapContext.Keys)
             {
                 topContext.Append(columnSeparator + column);
             }
 
-            for (var currentRow = 0; currentRow < mapRowsQty; currentRow++)
+            for (var currentRow = 0; currentRow < mapRowsAmount; currentRow++)
             {
                 var rowIndex = (currentRow + 1).ToString().PadLeft(2);
                 rowsContext.Append("\n" + rowIndex + columnSeparator);
