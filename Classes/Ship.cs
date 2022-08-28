@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.WebSockets;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -104,17 +105,32 @@ namespace Warship.Classes
 
         public bool IsOnTarget(Coordinate targetCoordinate)
         {
-            throw new NotImplementedException();
+            foreach (var coordinate in Coordinates)
+            {
+                if (coordinate.X == targetCoordinate.X && coordinate.Y == targetCoordinate.Y)
+                    return true;
+            }
+
+            return false;
         }
 
-        public void IncreaseDamage() // +1 to DamagesAmount, and Destroyed = true if DamagesAmount == ShipLength
+        public void IncreaseDamage()
         {
-            throw new NotImplementedException();
+            DamagesAmount += 1;
+
+            if (DamagesAmount >= ShipLength)
+                Destroyed = true;
         }
 
-        public void ReportDamage() // Print info about damage, and destroyed if it's true
+        public void ReportDamage()
         {
-            throw new NotImplementedException();
+            if (Destroyed)
+            {
+                Console.WriteLine($"You destroyed {Name} completely!");
+                return;
+            }
+
+            Console.WriteLine($"Your fire get {Name}");
         }
     }
 }

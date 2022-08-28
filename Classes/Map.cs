@@ -52,7 +52,11 @@ namespace Warship.Classes
 
                 foreach (var column in MapContext.Keys)
                 {
-                    rowsContext.Append(MapContext[column][currentRow] + columnSeparator);
+                    var currentChar = MapContext[column][currentRow];
+                    //if (currentChar == shipChar) // TODO uncomment it
+                    //    currentChar = ' ';
+
+                    rowsContext.Append(currentChar + columnSeparator);
                 }
             }
 
@@ -68,24 +72,27 @@ namespace Warship.Classes
             if (!columnExist) return false;
 
             var row = coordinate.Y;
-            var rowExist = MapContext[column].Length >= row;
+            if (row >= MapContext[column].Length || row < 0) return false;
+            var rowExist = MapContext[column][row] != null;
 
             return rowExist;
         }
 
         public bool WasCoordinateShooted(Coordinate coordinate)
         {
-            var coordinatePositionContext = MapContext[coordinate.X][coordinate.Y - 1];
+            var coordinatePositionContext = MapContext[coordinate.X][coordinate.Y];
             var wasShooted = coordinatePositionContext == missedChar || coordinatePositionContext == hitChar;
 
             return wasShooted;
         }
 
+        public bool IsShipOnTargetField(Coordinate coordinate) => MapContext[coordinate.X][coordinate.Y] == shipChar;
+
         public void MarkShoot(Coordinate coordinate, bool successful)
         {
             var symbol = successful ? hitChar : missedChar;
 
-            MapContext[coordinate.X][coordinate.Y - 1] = symbol;
+            MapContext[coordinate.X][coordinate.Y] = symbol;
         }
 
         internal int GetRowsAmount() => MapContext['A'].Length;

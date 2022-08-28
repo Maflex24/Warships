@@ -1,4 +1,5 @@
-﻿using Warship.Classes;
+﻿using System.Threading.Channels;
+using Warship.Classes;
 
 var map = new Map(10, 10);
 
@@ -6,21 +7,26 @@ var ships = new List<Ship>
 {
     new Ship("Battleship", 5, map),
     new Ship("Destroyer", 4, map),
-    new Ship("Destroyer", 4, map)
+    new Ship("Second Destroyer", 4, map)
 };
 
 ships.ForEach(s => s.PositionShip());
+bool allShipsDestroyed = false;
 
-while (true)
+var shootCount = 0;
+
+while (!allShipsDestroyed)
 {
+    Console.WriteLine($"Shooted {shootCount} time(s)");
     map.Show();
 
-    Coordinate targetCoordinate;
+    Coordinate targetCoordinate = null;
 
-    while (true)
+    bool targedIsValid = false;
+    while (!targedIsValid)
     {
         Console.Write("Type your target: ");
-        targetCoordinate = Coordinate.CreateCoordinateFromInput(Console.ReadLine().ToUpper());
+        targetCoordinate = new Coordinate(Console.ReadLine().ToUpper());
 
         if (targetCoordinate is null)
         {
@@ -36,21 +42,27 @@ while (true)
 
         var positionWasShootAt = map.WasCoordinateShooted(targetCoordinate);
         if (positionWasShootAt)
+        {
             Console.WriteLine("You were shooting on this position");
-        else
-            break;
+            continue;
+        }
+
+        targedIsValid = true;
     }
 
-    var hitSuccessful = false;
-    foreach (var ship in ships)
-    {
-        var isOnTarget = ship.IsOnTarget(targetCoordinate);
+    var hitSuccessful = map.IsShipOnTargetField(targetCoordinate);
+    shootCount++;
 
-        if (isOnTarget)
+    if (hitSuccessful)
+    {
+        foreach (var ship in ships.Where(s => !s.Destroyed))
         {
-            hitSuccessful = true;
-            ship.IncreaseDamage();
-            ship.ReportDamage();
+            if (ship.IsOnTarget(targetCoordinate))
+            {
+                ship.IncreaseDamage();
+                ship.ReportDamage();
+                break;
+            }
         }
     }
 
@@ -58,14 +70,18 @@ while (true)
     {
         Console.WriteLine("You missed");
         map.MarkShoot(targetCoordinate, false);
+
+        Console.WriteLine();
         continue;
     }
 
     map.MarkShoot(targetCoordinate, true);
 
-    var allShipsDestroyed = ships.All(ship => ship.Destroyed);
+    allShipsDestroyed = ships.All(ship => ship.Destroyed);
 
-    if (allShipsDestroyed) break;
+    ships.ForEach(s => Console.WriteLine($"{s.Name} {s.ShipLength - s.DamagesAmount}/{s.ShipLength}"));
+    Console.WriteLine();
 }
 
 Console.WriteLine("Congratulations, you won!");
+Console.ReadKey();

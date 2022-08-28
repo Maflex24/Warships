@@ -17,9 +17,16 @@ namespace Warship.Classes
             Y = y;
         }
 
-        public static Coordinate CreateCoordinateFromInput(string userInput)
+        public Coordinate(string input)
         {
-            throw new NotImplementedException();
+            var x = input[0];
+
+            if (int.TryParse(input.Substring(1), out var y))
+            {
+                X = x;
+                Y = y - 1;
+            }
+
         }
     }
 }
