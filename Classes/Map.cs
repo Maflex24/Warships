@@ -85,5 +85,8 @@ namespace Warship.Classes
 
             MapContext[coordinate.X][coordinate.Y - 1] = symbol;
         }
+
+        internal int GetRowsAmount() => MapContext['A'].Length;
+        internal int GetColumnsAmount() => MapContext.Count;
     }
 }
