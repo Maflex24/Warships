@@ -9,8 +9,9 @@ namespace Warship.Classes
     {
         public char hitChar { get; } = 'o';
         public char missedChar { get; } = 'x';
+        public char shipChar { get; } = 's';
         private const string columnSeparator = "|";
-        private string alphabet { get; } = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        public string alphabet { get; } = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         public Dictionary<char, char[]> MapContext { get; }
 

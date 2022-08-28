@@ -1,6 +1,7 @@
 ﻿using Warship.Classes;
 
 var map = new Map(10, 10);
+Ship.map = map;
 
 var ships = new List<Ship>
 {
