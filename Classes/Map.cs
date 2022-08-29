@@ -45,6 +45,8 @@ namespace Warship.Classes
                 topContext.Append(columnSeparator + column);
             }
 
+            topContext.Append("|");
+
             for (var currentRow = 0; currentRow < mapRowsAmount; currentRow++)
             {
                 var rowIndex = (currentRow + 1).ToString().PadLeft(2);
@@ -53,8 +55,8 @@ namespace Warship.Classes
                 foreach (var column in MapContext.Keys)
                 {
                     var currentChar = MapContext[column][currentRow];
-                    //if (currentChar == shipChar) // TODO uncomment it
-                    //    currentChar = ' ';
+                    if (currentChar == shipChar)
+                        currentChar = ' ';
 
                     rowsContext.Append(currentChar + columnSeparator);
                 }
@@ -95,7 +97,7 @@ namespace Warship.Classes
             MapContext[coordinate.X][coordinate.Y] = symbol;
         }
 
-        internal int GetRowsAmount() => MapContext['A'].Length;
-        internal int GetColumnsAmount() => MapContext.Count;
+        public int GetRowsAmount() => MapContext['A'].Length;
+        public int GetColumnsAmount() => MapContext.Count;
     }
 }

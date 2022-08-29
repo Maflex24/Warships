@@ -7,7 +7,7 @@ var ships = new List<Ship>
 {
     new Ship("Battleship", 5, map),
     new Ship("Destroyer", 4, map),
-    new Ship("Second Destroyer", 4, map)
+    new Ship("Destroyer", 4, map)
 };
 
 ships.ForEach(s => s.PositionShip());
@@ -17,7 +17,8 @@ var shootCount = 0;
 
 while (!allShipsDestroyed)
 {
-    Console.WriteLine($"Shooted {shootCount} time(s)");
+    Console.WriteLine($"Shooted {shootCount} time(s)\n");
+
     map.Show();
 
     Coordinate targetCoordinate = null;
@@ -50,6 +51,8 @@ while (!allShipsDestroyed)
         targedIsValid = true;
     }
 
+    Console.WriteLine();
+
     var hitSuccessful = map.IsShipOnTargetField(targetCoordinate);
     shootCount++;
 
@@ -79,7 +82,6 @@ while (!allShipsDestroyed)
 
     allShipsDestroyed = ships.All(ship => ship.Destroyed);
 
-    ships.ForEach(s => Console.WriteLine($"{s.Name} {s.ShipLength - s.DamagesAmount}/{s.ShipLength}"));
     Console.WriteLine();
 }
 
