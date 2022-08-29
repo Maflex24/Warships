@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.WebSockets;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Warship.Classes
+﻿namespace Warship.Classes
 {
     public class Ship
     {
@@ -81,9 +73,9 @@ namespace Warship.Classes
         {
             var columnKey = (char)_map.alphabet[startColumn];
 
-            for (var i = columnKey; i < columnKey + ShipLength; i++)
+            for (var currentColumn = columnKey; currentColumn < columnKey + ShipLength; currentColumn++)
             {
-                if (_map.MapContext[i][row] != ' ')
+                if (_map.MapContext[currentColumn][row] != ' ')
                     return true;
             }
 
@@ -94,9 +86,9 @@ namespace Warship.Classes
         {
             var columnKey = (char)_map.alphabet[columnIndex];
 
-            for (var i = startRow; i < startRow + ShipLength; i++)
+            for (var currentRow = startRow; currentRow < startRow + ShipLength; currentRow++)
             {
-                if (_map.MapContext[columnKey][i] != ' ')
+                if (_map.MapContext[columnKey][currentRow] != ' ')
                     return true;
             }
 

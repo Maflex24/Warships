@@ -1,5 +1,4 @@
-﻿using System.Threading.Channels;
-using Warship.Classes;
+﻿using Warship.Classes;
 
 var map = new Map(10, 10);
 
@@ -11,8 +10,8 @@ var ships = new List<Ship>
 };
 
 ships.ForEach(s => s.PositionShip());
-bool allShipsDestroyed = false;
 
+var allShipsDestroyed = false;
 var shootCount = 0;
 
 while (!allShipsDestroyed)
@@ -21,19 +20,16 @@ while (!allShipsDestroyed)
 
     map.Show();
 
-    Coordinate targetCoordinate = null;
+    var targetCoordinate = new Coordinate();
 
-    bool targedIsValid = false;
-    while (!targedIsValid)
+    var targetIsValid = false;
+    while (!targetIsValid)
     {
         Console.Write("Type your target: ");
-        targetCoordinate = new Coordinate(Console.ReadLine().ToUpper());
+        var userInput = Console.ReadLine().ToUpper();
+        if (userInput == "") continue;
 
-        if (targetCoordinate is null)
-        {
-            Console.WriteLine("Your coordinate is wrong. Try again!");
-            continue;
-        }
+        targetCoordinate = new Coordinate(userInput);
 
         if (!map.IsCoordinateExist(targetCoordinate))
         {
@@ -48,41 +44,30 @@ while (!allShipsDestroyed)
             continue;
         }
 
-        targedIsValid = true;
+        targetIsValid = true;
     }
-
-    Console.WriteLine();
 
     var hitSuccessful = map.IsShipOnTargetField(targetCoordinate);
     shootCount++;
 
-    if (hitSuccessful)
+    switch (hitSuccessful)
     {
-        foreach (var ship in ships.Where(s => !s.Destroyed))
-        {
-            if (ship.IsOnTarget(targetCoordinate))
-            {
-                ship.IncreaseDamage();
-                ship.ReportDamage();
-                break;
-            }
-        }
-    }
+        case true:
+            var ship = ships.SingleOrDefault(s => s.IsOnTarget(targetCoordinate));
+            ship.IncreaseDamage();
+            ship.ReportDamage();
+            break;
 
-    if (!hitSuccessful)
-    {
-        Console.WriteLine("You missed");
-        map.MarkShoot(targetCoordinate, false);
+        case false:
+            Console.WriteLine("You missed");
+            map.MarkShoot(targetCoordinate, false);
 
-        Console.WriteLine();
-        continue;
+            Console.WriteLine();
+            continue;
     }
 
     map.MarkShoot(targetCoordinate, true);
-
     allShipsDestroyed = ships.All(ship => ship.Destroyed);
-
-    Console.WriteLine();
 }
 
 Console.WriteLine("Congratulations, you won!");

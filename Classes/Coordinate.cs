@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Warship.Classes
+﻿namespace Warship.Classes
 {
     public class Coordinate
     {
@@ -26,6 +20,10 @@ namespace Warship.Classes
                 X = x;
                 Y = y - 1;
             }
+        }
+
+        public Coordinate()
+        {
 
         }
     }
