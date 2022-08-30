@@ -7,7 +7,7 @@
         public int ShipLength { get; private set; }
         public List<Coordinate> Coordinates { get; set; } = new List<Coordinate>();
         public int DamagesAmount { get; private set; }
-        public bool Destroyed { get; private set; }
+        public bool IsDestroyed { get; private set; }
 
         public Ship(string name, int shipLength, Map map)
         {
@@ -75,7 +75,7 @@
 
             for (var currentColumn = columnKey; currentColumn < columnKey + ShipLength; currentColumn++)
             {
-                if (_map.MapContext[currentColumn][row] != ' ')
+                if (_map.MapContext[currentColumn][row] != _map.emptySpaceChar)
                     return true;
             }
 
@@ -88,7 +88,7 @@
 
             for (var currentRow = startRow; currentRow < startRow + ShipLength; currentRow++)
             {
-                if (_map.MapContext[columnKey][currentRow] != ' ')
+                if (_map.MapContext[columnKey][currentRow] != _map.emptySpaceChar)
                     return true;
             }
 
@@ -111,12 +111,12 @@
             DamagesAmount += 1;
 
             if (DamagesAmount >= ShipLength)
-                Destroyed = true;
+                IsDestroyed = true;
         }
 
         public void ReportDamage()
         {
-            if (Destroyed)
+            if (IsDestroyed)
             {
                 Console.WriteLine($"You destroyed {Name} completely!");
                 return;

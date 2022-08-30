@@ -33,8 +33,7 @@ while (!allShipsDestroyed)
             continue;
         }
 
-        var positionWasShootAt = map.WasCoordinateShooted(targetCoordinate);
-        if (positionWasShootAt)
+        if (map.WasCoordinateShooted(targetCoordinate))
         {
             Console.WriteLine("You were shooting on this position");
             continue;
@@ -56,7 +55,7 @@ while (!allShipsDestroyed)
             map.Show();
 
             shootedShip.ReportDamage();
-            allShipsDestroyed = ships.All(ship => ship.Destroyed);
+            allShipsDestroyed = ships.All(ship => ship.IsDestroyed);
             break;
 
         case false:

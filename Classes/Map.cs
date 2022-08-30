@@ -7,6 +7,7 @@ namespace Warship.Classes
         public char hitChar { get; } = 'o';
         public char missedChar { get; } = 'x';
         public char shipChar { get; } = 's';
+        public char emptySpaceChar { get; } = ' ';
         private const string columnSeparator = "|";
         public string alphabet { get; } = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -23,7 +24,7 @@ namespace Warship.Classes
 
                 for (var rowIndex = 0; rowIndex < rows; rowIndex++)
                 {
-                    mapContext[currentChar][rowIndex] = ' ';
+                    mapContext[currentChar][rowIndex] = emptySpaceChar;
                 }
             }
 
@@ -42,18 +43,19 @@ namespace Warship.Classes
                 topContext.Append(columnSeparator + column);
             }
 
-            topContext.Append("|");
+            topContext.Append(columnSeparator);
 
             for (var currentRow = 0; currentRow < mapRowsAmount; currentRow++)
             {
+                // arrays start from 0, more natural to human is start from 1, that's why it's currentRow + 1
                 var rowIndex = (currentRow + 1).ToString().PadLeft(2);
                 rowsContext.Append("\n" + rowIndex + columnSeparator);
 
                 foreach (var column in MapContext.Keys)
                 {
                     var currentChar = MapContext[column][currentRow];
-                    if (currentChar == shipChar)
-                        currentChar = ' ';
+                    if (currentChar == shipChar) // ships chars are on map, but they are hided. You can comment this condition to see them
+                        currentChar = emptySpaceChar;
 
                     rowsContext.Append(currentChar + columnSeparator);
                 }
@@ -72,15 +74,15 @@ namespace Warship.Classes
 
             var row = coordinate.Y;
             if (row >= MapContext[column].Length || row < 0) return false;
-            var rowExist = MapContext[column][row] != null;
 
-            return rowExist;
+            return true;
         }
 
         public bool WasCoordinateShooted(Coordinate coordinate)
         {
             var coordinatePositionContext = MapContext[coordinate.X][coordinate.Y];
-            var wasShooted = coordinatePositionContext == missedChar || coordinatePositionContext == hitChar;
+            var wasShooted = coordinatePositionContext == missedChar ||
+                             coordinatePositionContext == hitChar;
 
             return wasShooted;
         }
@@ -89,9 +91,9 @@ namespace Warship.Classes
 
         public void MarkShoot(Coordinate coordinate, bool successful)
         {
-            var symbol = successful ? hitChar : missedChar;
+            var markChar = successful ? hitChar : missedChar;
 
-            MapContext[coordinate.X][coordinate.Y] = symbol;
+            MapContext[coordinate.X][coordinate.Y] = markChar;
         }
 
         public int GetRowsAmount() => MapContext['A'].Length;
