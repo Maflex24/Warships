@@ -1,4 +1,4 @@
-﻿namespace Warship.Classes
+﻿namespace Warships.Classes
 {
     public class Coordinate
     {

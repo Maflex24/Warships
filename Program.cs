@@ -1,4 +1,4 @@
-﻿using Warship.Classes;
+﻿using Warships.Classes;
 
 var map = new Map(10, 10);
 map.Show();
